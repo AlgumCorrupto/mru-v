@@ -1,4 +1,4 @@
-<h1>visualização de gráficos MRU  e MRUV</h1>
+<h1>Visualização de gráficos MRU  e MRUV</h1>
 
 Posição x tempo
 S x T
@@ -9,7 +9,7 @@ V x T
 Área x tempo
 A x T 
 
-representação 2d
+Representação 2d
 
 <h2>Instalação:</h2>
 <p>Vá até <a href="https://github.com/AlgumCorrupto/mru-v/releases/tag/v1.0">esse link</a> e siga o processo de instalação.</p>
