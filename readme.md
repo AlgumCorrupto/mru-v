@@ -3,7 +3,7 @@
 Posição x tempo
 S x T
 
-Pelocidade x tempo
+Velocidade x tempo
 V x T
 
 Área x tempo
