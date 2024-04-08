@@ -1,0 +1,31 @@
+{
+    "normal": {
+        "black": "#1C1E1F",
+        "red": "#F76C7C",
+        "orange": "#F3A96A",
+        "yellow": "#E3D367",
+        "green": "#9CD57B",
+        "blue": "#78CEE9",
+        "purple": "#BAAOF8",
+        "gray": "#82878B"
+    },
+    "bg": {
+        "bg_dim": "#21282C",
+        "bg0": "#273136",
+        "bg1": "#313B42",
+        "bg2": "#352F46",
+        "bg3": "#3A444B",
+        "bg4": "#414B53",
+        "bg_red": "#FF6D7E",
+        "bg_green": "#A2E57B",
+        "bg_blue": "#7CD5F1"
+    },
+    "gray_dim": "#55626D",
+    "fg": "#E1E2E3",
+    "diff": {
+        "diff_red": "#55593D",
+        "diff_green": "#394634",
+        "diff_blue": "#354157",
+        "diff_yellow": "#4E432F"
+    }
+}

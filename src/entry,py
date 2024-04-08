@@ -1,0 +1,10 @@
+import sim
+import window
+import sys
+
+import numpy as np
+
+window.app.show()
+window.app.activateWindow()
+window.app.raise_()
+window.qapp.exec()
