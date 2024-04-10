@@ -51,9 +51,9 @@ class g():
             xm *= 2/3
 
         self.ax.set(xlim=(xm, xl),ylim=(ym, yl))
-        #hMod = 0.175 if abs_max(max(self.y)) == abs_max(min(self.y)) else 0.070
+        #hMagic = 0.175 if abs_max(max(self.y)) == abs_max(min(self.y)) else 0.070
         #self.circleW =  abs_max(max(self.x))*(0.1+(self.canvas.height()/self.canvas.width()*0.1)) if abs_max(max(self.x)) >= 1 else 0.018
-        #self.circleH =  abs_max(max(self.y))*(hMod+(self.canvas.width()/self.canvas.height()*0.1)) if abs_max(max(self.y)) >= 1 else 0.018
+        #self.circleH =  abs_max(max(self.y))*(hMagic+(self.canvas.width()/self.canvas.height()*0.1)) if abs_max(max(self.y)) >= 1 else 0.018
         self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
         self.ax.add_patch(self.circle)
         self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), blit=True, interval=100)
@@ -126,9 +126,29 @@ class g():
         return minimum
     
     def update(self, frame):
-        hMod = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
-        self.circleW =  self.abs_max(self.x)*(0.1+(self.canvas.height()/self.canvas.width()*0.1))   if self.abs_max(self.x) != 0 else  0.13 * (0.1+(self.canvas.height()/self.canvas.width()*0.1))
-        self.circleH =  self.abs_max(self.y)*(hMod+(self.canvas.width()/self.canvas.height()*0.1))  if self.abs_max(self.y) != 0 else  0.13 * (hMod+(self.canvas.width()/self.canvas.height()*0.1))
+        hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
+
+        xmod = 0
+        xmax = self.abs_max(self.x)
+        xmin = self.abs_min(self.x)
+        if(xmax == 0):
+            xmod = 0.13
+        elif(xmax == xmin):
+            xmod = xmax
+        else:
+            xmod = xmax - xmin
+        
+        ymod = 0
+        ymax = self.abs_max(self.y)
+        ymin = self.abs_min(self.y)
+        if(ymax == 0):
+            ymod = 0.13
+        elif(ymax == ymin):
+            ymod = ymax
+        else:
+            ymod = ymax - ymin
+        self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
+        self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
         self.circle.remove()
         #isso é do SATANÁS, AMIGO!!!!1!
         #ainda bem que não precisei usar 
