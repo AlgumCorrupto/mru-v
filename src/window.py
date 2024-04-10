@@ -29,6 +29,8 @@ class ApplicationWindow(QMainWindow):
         self._setupUtils()
         self._setupGraphs()
         self._setupConfigWidget()
+        style = open('assets/sonokaiStyle.qss')
+        self.setStyleSheet(style.read())
 
 
     def contextMenuEvent(self, event):

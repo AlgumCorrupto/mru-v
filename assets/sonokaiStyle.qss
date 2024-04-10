@@ -1,0 +1,31 @@
+QWidget {
+    background-color:#3A444B;
+    color: #E1E2E3;
+}
+
+QGraphicsView {
+    background-color: #21282C;
+    border: none;
+}
+
+QMenuBar {
+    background-color: #21282C;
+}
+
+QMenuBar::item:selected {
+    background-color: #414B53;
+}
+
+QMenu {
+    background-color: #21282C;
+    
+}
+
+QPushButton {
+    background-color: #21282C;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #313B42;
+    border-radius: 10px;
+    padding:  1em;
+}

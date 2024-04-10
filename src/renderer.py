@@ -2,6 +2,7 @@ import sys
 from PyQt6.QtWidgets import QGraphicsScene, QGraphicsRectItem, QGraphicsEllipseItem
 from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QBrush, QColor, QFont
+from colorParser import clr
 
 class scene(QGraphicsScene):
     def __init__(self, parent, view, sim):
@@ -11,9 +12,11 @@ class scene(QGraphicsScene):
         self.view = view
         self.view.setScene(self)
         self.text = self.addText("Representação")
+        self.text.setFont(QFont("Cursiv"))
+        self.text.setDefaultTextColor(clr.qtFg)
         self.text.setScale(5)
         self.runner = QGraphicsEllipseItem(0, 0, 100, 100)
-        brush = QBrush(QColor(255, 255, 0, 255))
+        brush = QBrush(clr.qtNormal[3])
         self.runner.setBrush(brush)
         self.vel = self.sim.startVel
         self.addItem(self.runner)
@@ -29,9 +32,10 @@ class scene(QGraphicsScene):
          self.runner.setPos(self.runner.x(), (self.height()/2) - 100/2)
          if self.isRunning and self.elapsedTime < self.sim.TimeF:
             self.elapsedTime+=1
-            pos = self.runner.x() + (self.vel)
+            pos = (self.runner.x() + (self.vel))
             self.runner.setPos(pos, (self.height()/2) - 100/2)
             self.vel += self.sim.acce
+
             self.text.setPlainText("T={}, A={}, S={}, V={}".format(self.elapsedTime, 
                                                                    self.sim.acce, 
                                                                    self.sim.dataArr[int(self.elapsedTime - self.sim.Time0) - 1].pos,
