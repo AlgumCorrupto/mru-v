@@ -12,7 +12,7 @@ A x T
 Representação 2d
 
 <h2>Instalação:</h2>
-<p>Vá até <a href="https://github.com/AlgumCorrupto/mru-v/releases/tag/v1.0">esse link</a> e siga o processo de instalação.</p>
+<p>Vá até <a href="https://github.com/AlgumCorrupto/mru-v/releases">esse link</a> selecione a versão com maior número e siga o processo de instalação.</p>
 
 <h2>Screenshots</h2>
 
