@@ -7,11 +7,15 @@ from colorParser import clr
 class scene(QGraphicsScene):
     def __init__(self, parent, view, sim):
         super().__init__(parent)
+        self.elapsedTime = 0
         self.setSceneRect(0, 0, 400, 175)
         self.sim = sim
         self.view = view
         self.view.setScene(self)
-        self.text = self.addText("Representação")
+        self.text = self.addText("T={}, A={}, S={}, V={}".format(self.elapsedTime, 
+                                                                       self.sim.acce, 
+                                                                       self.sim.dataArr[0].pos,
+                                                                       self.sim.dataArr[0].vel))
         self.text.setFont(QFont("Cursiv"))
         self.text.setDefaultTextColor(clr.qtFg)
         self.text.setScale(5)
@@ -20,8 +24,9 @@ class scene(QGraphicsScene):
         self.runner.setBrush(brush)
         self.vel = self.sim.startVel
         self.addItem(self.runner)
-        self.elapsedTime = self.sim.Time0
         self.timer = QTimer()
+        # i guess 100ms in qt and matplotlib are not the same thing :/
+        # update: now it is
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.run)
         self.isRunning = False
@@ -30,16 +35,19 @@ class scene(QGraphicsScene):
     def run(self):
          self.text.setPos((self.view.width()/2) - ((self.text.boundingRect().width()*5)/2), ((self.height()/2)) - ((self.text.boundingRect().height()) * 5)/2)
          self.runner.setPos(self.runner.x(), (self.height()/2) - 100/2)
+         index = int(self.elapsedTime - self.sim.Time0) if int(self.elapsedTime - self.sim.Time0) >= 0 else 0
+         self.text.setPlainText("T={}, A={}, S={}, V={}".format(self.elapsedTime, 
+                                                                self.sim.acce, 
+                                                                self.sim.dataArr[index].pos,
+                                                                self.sim.dataArr[index].vel))
          if self.isRunning and self.elapsedTime < self.sim.TimeF:
+            print("renderer: {}".format(str(self.elapsedTime)))
+            if self.elapsedTime >= self.sim.Time0:
+                pos = (self.runner.x() + (self.vel))
+                self.runner.setPos(pos, self.runner.y())
+                self.vel += self.sim.acce
             self.elapsedTime+=1
-            pos = (self.runner.x() + (self.vel))
-            self.runner.setPos(pos, (self.height()/2) - 100/2)
-            self.vel += self.sim.acce
 
-            self.text.setPlainText("T={}, A={}, S={}, V={}".format(self.elapsedTime, 
-                                                                   self.sim.acce, 
-                                                                   self.sim.dataArr[int(self.elapsedTime - self.sim.Time0) - 1].pos,
-                                                                   self.sim.dataArr[int(self.elapsedTime - self.sim.Time0) - 1].vel))
 
     def pauseSim(self):
         self.isRunning = False
@@ -50,4 +58,4 @@ class scene(QGraphicsScene):
     def resetSim(self):
         self.runner.setPos(0, self.runner.y())
         self.vel = self.sim.startVel
-        self.elapsedTime = self.sim.Time0
+        self.elapsedTime = 0

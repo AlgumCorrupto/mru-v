@@ -39,18 +39,20 @@ class Simulation():
     
     #run simulation
     def run(self):
-        while self.currTime < self.TimeF:
+        self.dataArr.append(data.Data(self.startPos, self.currTime + self.Time0, self.startVel, self.acce))
+        while self.currTime + self.Time0 < (self.TimeF):
             self.currTime+=1
             vel = self.startVel + self.acce*self.currTime
             pos = self.startPos + self.startVel * self.currTime + (self.acce*pow(self.currTime, 2)) * 0.5
             #Amém
-            self.dataArr.append(data.Data(pos, self.currTime, vel, self.acce))
+            self.dataArr.append(data.Data(pos, self.currTime + self.Time0, vel, self.acce))
+        print(self.dataArr[0].vel)
 
     #reset the simulation
     def reset(self):
         self.currVel = self.startVel
         self.pos = self.startPos
-        self.currTime = self.Time0
+        self.currTime = 0
 
 
 

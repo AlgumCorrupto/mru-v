@@ -10,17 +10,18 @@ from matplotlib import cycler
 from matplotlib.font_manager import FontProperties
 
 class g():
-    def __init__(self, title, x, labelX, y,  labelY, par):
+    def __init__(self, title: str, x, labelX:str, y,  labelY: str, par):
         self.x = x
         self.y = y
         self.labelX = labelX
         self.labelY = labelY
         self.title = title
         self.parent = par
-        self.dTime = 0
+        self.elapsedTime = 0
 
     # overriding abstract method
     def setPlot(self, x, y):
+        self.reset()
         plt.style.use('_mpl-gallery')
         self.x = x
         self.y = y
@@ -51,9 +52,31 @@ class g():
             xm *= 2/3
 
         self.ax.set(xlim=(xm, xl),ylim=(ym, yl))
-        #hMagic = 0.175 if abs_max(max(self.y)) == abs_max(min(self.y)) else 0.070
-        #self.circleW =  abs_max(max(self.x))*(0.1+(self.canvas.height()/self.canvas.width()*0.1)) if abs_max(max(self.x)) >= 1 else 0.018
-        #self.circleH =  abs_max(max(self.y))*(hMagic+(self.canvas.width()/self.canvas.height()*0.1)) if abs_max(max(self.y)) >= 1 else 0.018
+        
+        hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
+
+        xmod = 0
+        xmax = self.abs_max(self.x)
+        xmin = self.abs_min(self.x)
+        if(xmax == 0):
+            xmod = 0.13
+        elif(xmax == xmin):
+            xmod = xmax
+        else:
+            xmod = xmax - xmin
+        
+        ymod = 0
+        ymax = self.abs_max(self.y)
+        ymin = self.abs_min(self.y)
+        if(ymax == 0):
+            ymod = 0.13
+        elif(ymax == ymin):
+            ymod = ymax
+        else:
+            ymod = ymax - ymin
+        self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
+        self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
+
         self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
         self.ax.add_patch(self.circle)
         self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), blit=True, interval=100)
@@ -83,10 +106,29 @@ class g():
 
         self.ax.set(xlim=(xm, xl), xticks=np.arange(0, 0),
         ylim=(ym, yl), yticks=np.arange(0, 0))
-        #self.circleW =  max(self.x)*0.1 if max(self.x) >= 1 else 1.0
-        self.circleW =  max(self.x)*(self.canvas.height()/ self.canvas.width())*0.1 if max(self.x) >= 1 else 1.0
-        #self.circleH =  yl*0.13333 if yl >= 1 else 1.0
-        self.circleH =  yl*(self.canvas.height()/ self.canvas.width())*0.1 if yl >= 1 else 1.0
+        hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
+
+        xmod = 0
+        xmax = self.abs_max(self.x)
+        xmin = self.abs_min(self.x)
+        if(xmax == 0):
+            xmod = 0.13
+        elif(xmax == xmin):
+            xmod = xmax
+        else:
+            xmod = xmax - xmin
+        
+        ymod = 0
+        ymax = self.abs_max(self.y)
+        ymin = self.abs_min(self.y)
+        if(ymax == 0):
+            ymod = 0.13
+        elif(ymax == ymin):
+            ymod = ymax
+        else:
+            ymod = ymax - ymin
+        self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
+        self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
         self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
         self.ax.add_patch(self.circle)
         self.i = 0
@@ -150,13 +192,12 @@ class g():
         self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
         self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
         self.circle.remove()
-        #isso é do SATANÁS, AMIGO!!!!1!
-        #ainda bem que não precisei usar 
-        #reze por mim, quem estiver vendo esse código
-        #gc.collect()
-        self.dTime += 1
+        
         if self.i < len(self.x) - 1 and self.isRunning == True:
-            self.i+= 1
+            self.elapsedTime += 1
+            print("{}: {}".format(self.title, str(self.elapsedTime)))
+            if self.elapsedTime >= min(self.x):
+                self.i+= 1
             self.circle = pt.Ellipse((self.x[self.i],self.y[self.i]),self.circleW, self.circleH, fc=clr.matNormal[3],ec='black')
         else:
             self.circle = pt.Ellipse((self.x[self.i],self.y[self.i]),self.circleW, self.circleH, fc=clr.matNormal[3],ec='black')
@@ -168,3 +209,4 @@ class g():
         self.isRunning = True if not self.isRunning else False
     def reset(self):
         self.i = 0
+        self.elapsedTime = 0

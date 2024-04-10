@@ -64,10 +64,10 @@ class ConfigDialog(widgets.QDialog):
         self.setFixedSize(165, 300)
 
     def updateStuff(self):
-        if int(self.time0In.text() > self.timeFIn.text()):
+        if int(self.time0In.text()) > int(self.timeFIn.text()) or int(self.time0In.text()) < 0:
             msg = widgets.QMessageBox()
             msg.setWindowTitle("Erro ao processar formulário")
-            msg.setText("Tempo final não pode ser menor que o tempo inicial.\nTempo não pode conter casas decimais")
+            msg.setText("Tempo final não pode ser menor que o tempo inicial.\nTempo não pode conter casas decimais.\nTempo não pode ser negativo.")
             msg.exec()
             return
         try:
@@ -101,6 +101,6 @@ class ConfigDialog(widgets.QDialog):
         self.parent.VGraph.setPlot(t, v)
         self.parent.gScene.sim = obj
         self.parent.reset()
-
+        self.close()
         
     
