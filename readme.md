@@ -16,8 +16,6 @@ Representação 2d
 
 <h2>Screenshots</h2>
 
-![2024-04-08-11-40-36](https://github.com/AlgumCorrupto/mru-v/assets/112904295/4d3921db-3cab-4e8f-a605-66b92b88a4b6)
-*v1.0*
-
+![2024-04-10-00-06-50](https://github.com/AlgumCorrupto/mru-v/assets/112904295/97cbb91c-9b8e-43ac-9c46-6486be8b9f03)
 ![2024-04-09-23-53-40](https://github.com/AlgumCorrupto/mru-v/assets/112904295/c995fb92-620a-44a8-b4c2-80372750d759)
 *v1.1*
