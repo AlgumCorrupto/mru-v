@@ -1,13 +1,13 @@
 <h1>Visualização de gráficos MRU  e MRUV</h1>
 
-Posição x tempo
+Posição x Tempo
 S x T
 
-Velocidade x tempo
+Velocidade x Tempo
 V x T
 
-Área x tempo
-A x T 
+Aceleração x Tempo
+a x T 
 
 Representação 2d
 
