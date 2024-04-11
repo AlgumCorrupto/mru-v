@@ -126,7 +126,7 @@ class ApplicationWindow(QMainWindow):
         self.SGraph = g("S x T", t, "Tempo", s, "Distância", self)
         self.SGraph.plot()
         #gráfico A x T
-        self.AGraph = g("A x T", t, "Tempo", a, "Aceleração", self)
+        self.AGraph = g("a x T", t, "Tempo", a, "Aceleração", self)
         self.AGraph.plot()
         #gráfico V x T
         self.VGraph = g("V x T", t, "Tempo", v, "Velocidade", self)

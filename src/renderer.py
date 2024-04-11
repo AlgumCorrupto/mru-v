@@ -35,7 +35,7 @@ class scene(QGraphicsScene):
          self.text.setPos((self.view.width()/2) - ((self.text.boundingRect().width()*5)/2), ((self.height()/2)) - ((self.text.boundingRect().height()) * 5)/2)
          self.runner.setPos(self.runner.x(), (self.height()/2) - 100/2)
          index = int(self.elapsedTime - self.sim.Time0) if int(self.elapsedTime - self.sim.Time0) >= 0 else 0
-         self.text.setPlainText("T={}, A={}, S={}, V={}".format(self.elapsedTime, 
+         self.text.setPlainText("T={}, a={}, S={}, V={}".format(self.elapsedTime, 
                                                                 self.sim.acce, 
                                                                 self.sim.dataArr[index].pos,
                                                                 self.sim.dataArr[index].vel))
