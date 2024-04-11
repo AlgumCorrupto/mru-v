@@ -53,33 +53,11 @@ class g():
 
         self.ax.set(xlim=(xm, xl),ylim=(ym, yl))
         
-        hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
-
-        xmod = 0
-        xmax = self.abs_max(self.x)
-        xmin = self.abs_min(self.x)
-        if(xmax == 0):
-            xmod = 0.13
-        elif(xmax == xmin):
-            xmod = xmax
-        else:
-            xmod = xmax - xmin
-        
-        ymod = 0
-        ymax = self.abs_max(self.y)
-        ymin = self.abs_min(self.y)
-        if(ymax == 0):
-            ymod = 0.13
-        elif(ymax == ymin):
-            ymod = ymax
-        else:
-            ymod = ymax - ymin
-        self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
-        self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
-
-        self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
-        self.ax.add_patch(self.circle)
-        self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), blit=True, interval=100)
+        ##self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
+        ##self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
+        ##self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
+        #self.ax.add_patch(self.circle)
+        self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), blit=True, interval=60)
         #plt.subplots_adjust(top=0.85, bottom=0.18, left=0.20, right=0.80, hspace=0.25,
         #            wspace=0.35)
 
@@ -106,34 +84,10 @@ class g():
 
         self.ax.set(xlim=(xm, xl), xticks=np.arange(0, 0),
         ylim=(ym, yl), yticks=np.arange(0, 0))
-        hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
 
-        xmod = 0
-        xmax = self.abs_max(self.x)
-        xmin = self.abs_min(self.x)
-        if(xmax == 0):
-            xmod = 0.13
-        elif(xmax == xmin):
-            xmod = xmax
-        else:
-            xmod = xmax - xmin
-        
-        ymod = 0
-        ymax = self.abs_max(self.y)
-        ymin = self.abs_min(self.y)
-        if(ymax == 0):
-            ymod = 0.13
-        elif(ymax == ymin):
-            ymod = ymax
-        else:
-            ymod = ymax - ymin
-        self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
-        self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
-        self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
-        self.ax.add_patch(self.circle)
         self.i = 0
         self.isRunning = False
-        self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), blit=True, interval=100)
+        self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), interval=60, blit=True)
         Cursiv = FontProperties('Cursiv')
         plt.ylabel(self.labelY, font=Cursiv, fontsize=14).set_color(clr.matFg)
         plt.xlabel(self.labelX, font=Cursiv, fontsize=14).set_color(clr.matFg)
@@ -191,7 +145,7 @@ class g():
             ymod = ymax - ymin
         self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
         self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
-        self.circle.remove()
+        #self.circle.remove()
         
         if self.i < len(self.x) - 1 and self.isRunning == True:
             self.elapsedTime += 1

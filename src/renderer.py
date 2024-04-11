@@ -26,14 +26,13 @@ class scene(QGraphicsScene):
         self.addItem(self.runner)
         self.timer = QTimer()
         # i guess 100ms in qt and matplotlib are not the same thing :/
-        self.timer.setInterval(94)
+        self.timer.setInterval(62)
         self.timer.timeout.connect(self.run)
         self.isRunning = False
         self.timer.start()
 
     def run(self):
          self.text.setPos((self.view.width()/2) - ((self.text.boundingRect().width()*5)/2), ((self.height()/2)) - ((self.text.boundingRect().height()) * 5)/2)
-         self.runner.setPos(self.runner.x(), (self.height()/2) - 100/2)
          index = int(self.elapsedTime - self.sim.Time0) if int(self.elapsedTime - self.sim.Time0) >= 0 else 0
          self.text.setPlainText("T={}, a={}, S={}, V={}".format(self.elapsedTime, 
                                                                 self.sim.acce, 
@@ -43,9 +42,10 @@ class scene(QGraphicsScene):
             print("renderer: {}".format(str(self.elapsedTime)))
             if self.elapsedTime >= self.sim.Time0:
                 pos = (self.runner.x() + (self.vel))
-                self.runner.setPos(pos, self.runner.y())
+                self.runner.setX(pos)
                 self.vel += self.sim.acce
-            self.elapsedTime+=1
+            self.elapsedTime+= 1
+         self.runner.setY((self.height()/2) - 100/2)
 
 
     def pauseSim(self):
