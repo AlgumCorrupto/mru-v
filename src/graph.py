@@ -25,10 +25,6 @@ class g():
         plt.style.use('_mpl-gallery')
         self.x = x
         self.y = y
-        self.ani.__del__()
-        self.ani.pause()
-        self.circle.remove()
-        del self.ani
         gc.collect()
 
         if len(self.ax.lines) > 0:
@@ -52,14 +48,34 @@ class g():
             xm *= 2/3
 
         self.ax.set(xlim=(xm, xl),ylim=(ym, yl))
+
+        hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
+
+        xmod = 0
+        xmax = self.abs_max(self.x)
+        xmin = self.abs_min(self.x)
+        if(xmax == 0):
+            xmod = 0.13
+        elif(xmax == xmin):
+            xmod = xmax
+        else:
+            xmod = xmax - xmin
         
-        ##self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
-        ##self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
-        ##self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
-        #self.ax.add_patch(self.circle)
-        self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), blit=True, interval=60)
-        #plt.subplots_adjust(top=0.85, bottom=0.18, left=0.20, right=0.80, hspace=0.25,
-        #            wspace=0.35)
+        ymod = 0
+        ymax = self.abs_max(self.y)
+        ymin = self.abs_min(self.y)
+        if(ymax == 0):
+            ymod = 0.13
+        elif(ymax == ymin):
+            ymod = ymax
+        else:
+            ymod = ymax - ymin
+        self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
+        self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
+
+        self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
+        self.ax.add_patch(self.circle)
+        self.ax.draw_artist(self.circle)
 
     def plot(self):
         self.style()
@@ -85,43 +101,6 @@ class g():
         self.ax.set(xlim=(xm, xl), xticks=np.arange(0, 0),
         ylim=(ym, yl), yticks=np.arange(0, 0))
 
-        self.i = 0
-        self.isRunning = False
-        self.ani = anm.FuncAnimation(self.fig, self.update, frames=len(self.x), interval=60, blit=True)
-        Cursiv = FontProperties('Cursiv')
-        plt.ylabel(self.labelY, font=Cursiv, fontsize=14).set_color(clr.matFg)
-        plt.xlabel(self.labelX, font=Cursiv, fontsize=14).set_color(clr.matFg)
-        plt.title(self.title,   font=Cursiv, fontsize=20)
-        plt.yscale('linear')
-        plt.xscale('linear')
-        plt.subplots_adjust(top=0.85, bottom=0.11, left=0.20, right=0.80, hspace=0.25,
-                    wspace=0.5)
-        #amém
-        #plt.show()
-
-    def style(self):
-        plt.rc('figure', facecolor=clr.matBg[0])
-        plt.rc('axes', facecolor=clr.matFg, edgecolor='none',
-        axisbelow=True, grid=True)
-        plt.rc('xtick', direction='out', color=clr.matFg)
-        plt.rc('ytick', direction='out', color=clr.matFg)
-        plt.rc('text',  color=clr.matFg)
-        plt.rc('lines', linewidth=2, color=clr.matGrayDim)
-
-    def abs_max(self, list):
-        maximum = -1
-        for value in list:
-            if abs(value) > maximum:
-                maximum = abs(value)
-        return maximum
-    def abs_min(self, list):
-        minimum = 0xFFFFFF
-        for value in list:
-            if abs(value) < minimum:
-                minimum = abs(value)
-        return minimum
-    
-    def update(self, frame):
         hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
 
         xmod = 0
@@ -145,7 +124,69 @@ class g():
             ymod = ymax - ymin
         self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
         self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
-        #self.circle.remove()
+
+        self.circle = pt.Ellipse((self.x[0],self.y[0]),self.circleW, self.circleH, fc='yellow',ec='black')
+        self.ax.add_patch(self.circle)
+        self.ax.draw_artist(self.circle)
+
+        self.i = 0
+        self.isRunning = False
+        Cursiv = FontProperties('Cursiv')
+        plt.ylabel(self.labelY, font=Cursiv, fontsize=14).set_color(clr.matFg)
+        plt.xlabel(self.labelX, font=Cursiv, fontsize=14).set_color(clr.matFg)
+        plt.title(self.title,   font=Cursiv, fontsize=20)
+        plt.yscale('linear')
+        plt.xscale('linear')
+        plt.subplots_adjust(top=0.85, bottom=0.11, left=0.20, right=0.80, hspace=0.25,
+                    wspace=0.5)
+
+    def style(self):
+        plt.rc('figure', facecolor=clr.matBg[0])
+        plt.rc('axes', facecolor=clr.matFg, edgecolor='none',
+        axisbelow=True, grid=True)
+        plt.rc('xtick', direction='out', color=clr.matFg)
+        plt.rc('ytick', direction='out', color=clr.matFg)
+        plt.rc('text',  color=clr.matFg)
+        plt.rc('lines', linewidth=2, color=clr.matGrayDim)
+
+    def abs_max(self, list):
+        maximum = -1
+        for value in list:
+            if abs(value) > maximum:
+                maximum = abs(value)
+        return maximum
+    def abs_min(self, list):
+        minimum = 0xFFFFFF
+        for value in list:
+            if abs(value) < minimum:
+                minimum = abs(value)
+        return minimum
+    
+    def update(self):
+        hMagic = 0.030 if self.abs_max(self.y) == self.abs_min(self.y) else 0.070
+
+        xmod = 0
+        xmax = self.abs_max(self.x)
+        xmin = self.abs_min(self.x)
+        if(xmax == 0):
+            xmod = 0.13
+        elif(xmax == xmin):
+            xmod = xmax
+        else:
+            xmod = xmax - xmin
+        
+        ymod = 0
+        ymax = self.abs_max(self.y)
+        ymin = self.abs_min(self.y)
+        if(ymax == 0):
+            ymod = 0.13
+        elif(ymax == ymin):
+            ymod = ymax
+        else:
+            ymod = ymax - ymin
+        self.circleW =  xmod*(0.1+(self.canvas.height()/self.canvas.width()*0.1))
+        self.circleH =  ymod*(hMagic+(self.canvas.width()/self.canvas.height()*0.1))
+        self.circle.remove()
         
         if self.i < len(self.x) - 1 and self.isRunning == True:
             self.elapsedTime += 1
@@ -156,9 +197,9 @@ class g():
         else:
             self.circle = pt.Ellipse((self.x[self.i],self.y[self.i]),self.circleW, self.circleH, fc=clr.matNormal[3],ec='black')
         self.ax.add_patch(self.circle)
-        
-        return [self.circle]
-    
+        self.ax.draw_artist(self.circle)    
+        self.canvas.draw_idle()
+
     def play(self):
         self.isRunning = True if not self.isRunning else False
     def reset(self):

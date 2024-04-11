@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtCore import Qt, QSize, QTimer
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QMainWindow, QVBoxLayout, QGraphicsView, QMenu, QLabel, QPushButton, QGroupBox
 import PyQt6.QtWidgets as widgets
@@ -11,6 +11,7 @@ import numpy as np
 
 #muito import ayy cabron
 from matplotlib.backends.backend_qtagg import FigureCanvas
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qtagg import \
     NavigationToolbar2QT as NavigationToolbar
 from matplotlib.backends.qt_compat import QtWidgets
@@ -31,6 +32,13 @@ class ApplicationWindow(QMainWindow):
         self._setupConfigWidget()
         style = open('assets/sonokaiStyle.qss')
         self.setStyleSheet(style.read())
+
+        self.viewLayout.setContentsMargins(0,0,0,0)
+        self.timer = QTimer()
+        self.timer.setInterval(60)
+        self.timer.timeout.connect(self.update)
+        self.isRunning = False
+        self.timer.start()
 
 
     def contextMenuEvent(self, event):
@@ -69,9 +77,6 @@ class ApplicationWindow(QMainWindow):
         self.viewLayout.addWidget(self.bottomWidget)
         self.viewLayout.setStretch(0, 6)
         self.viewLayout.setStretch(1, 4)
-
-
-        self.viewLayout.setContentsMargins(0,0,0,0)
         
 
     def _setupUtils(self):
@@ -153,6 +158,13 @@ class ApplicationWindow(QMainWindow):
         self.SGraph.reset()
         self.AGraph.reset()
         self.VGraph.reset()
+
+    def update(self):
+        self.SGraph.update()
+        self.AGraph.update()
+        self.VGraph.update()
+        self.gScene.run()
+
 
     def invokeCfgDialog(self):
         self.configDialog.show()

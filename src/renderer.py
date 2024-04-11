@@ -24,12 +24,7 @@ class scene(QGraphicsScene):
         self.runner.setBrush(brush)
         self.vel = self.sim.startVel
         self.addItem(self.runner)
-        self.timer = QTimer()
-        # i guess 100ms in qt and matplotlib are not the same thing :/
-        self.timer.setInterval(60)
-        self.timer.timeout.connect(self.run)
         self.isRunning = False
-        self.timer.start()
 
     def run(self):
          self.text.setPos((self.view.width()/2) - ((self.text.boundingRect().width()*5)/2), ((self.height()/2)) - ((self.text.boundingRect().height()) * 5)/2)
