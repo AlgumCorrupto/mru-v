@@ -64,6 +64,7 @@ class ConfigDialog(widgets.QDialog):
         self.setFixedSize(165, 300)
 
     def updateStuff(self):
+        self.parent.timer.stop()
         if int(self.time0In.text()) > int(self.timeFIn.text()) or int(self.time0In.text()) < 0:
             msg = widgets.QMessageBox()
             msg.setWindowTitle("Erro ao processar formulário")
@@ -101,6 +102,7 @@ class ConfigDialog(widgets.QDialog):
         self.parent.VGraph.setPlot(t, v)
         self.parent.gScene.sim = obj
         self.parent.reset()
+        self.parent.timer.start()
         self.close()
         
     
