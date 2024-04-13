@@ -39,7 +39,7 @@ class Simulation():
     
     #run simulation
     def run(self):
-        self.dataArr.append(data.Data(self.startPos, self.currTime + self.Time0, self.startVel, self.acce))
+        #self.dataArr.append(data.Data(self.startPos, self.currTime + self.Time0, self.startVel, self.acce))
         while self.currTime + self.Time0 < (self.TimeF):
             self.currTime+=1
             vel = self.startVel + self.acce*self.currTime

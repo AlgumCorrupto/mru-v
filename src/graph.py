@@ -137,10 +137,10 @@ class g():
         #self.circle.remove()
         #self.bg = self.fig.canvas.copy_from_bbox(self.fig.bbox)
 
+       #print("{}: {}".format(self.title, self.y[self.i]))
         
         if self.i < len(self.x) - 1 and self.isRunning == True:
             self.elapsedTime += 1
-            print("{}: {}".format(self.title, str(self.elapsedTime)))
             if self.elapsedTime >= min(self.x):
                 self.i+= 1
             self.circle = pt.Ellipse((self.x[self.i],self.y[self.i]),self.circleW, self.circleH, fc=clr.matNormal[3],ec='black', animated=True)
