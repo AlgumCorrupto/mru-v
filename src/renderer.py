@@ -28,17 +28,21 @@ class scene(QGraphicsScene):
 
     def run(self):
          self.text.setPos((self.view.width()/2) - ((self.text.boundingRect().width()*5)/2), ((self.height()/2)) - ((self.text.boundingRect().height()) * 5)/2)
-         index = int(self.elapsedTime - self.sim.Time0) if int(self.elapsedTime - self.sim.Time0) < self.sim.TimeF else self.sim.TimeF - 1
+         index = int(self.elapsedTime - self.sim.Time0) if int(self.elapsedTime - self.sim.Time0) < self.sim.TimeF else self.sim.TimeF
+         if index < 0:
+             index = 0
          self.text.setPlainText("T={}, a={}, S={}, V={}".format(self.elapsedTime if self.elapsedTime > 0 else 0, 
-                                                                self.sim.acce, 
+                                                                self.sim.dataArr[index].acce, 
                                                                 round(self.sim.dataArr[index].pos, 2),
-                                                                self.vel))
+                                                                self.sim.dataArr[index].vel))
+                                                             
          if self.isRunning and self.elapsedTime < self.sim.TimeF:
             print("renderer: {}".format(str(self.elapsedTime)))
             if self.elapsedTime > self.sim.Time0:
-                self.vel += self.sim.acce
-                pos = (self.runner.x() + (self.vel))
-                self.runner.setX(pos)
+                acce = self.sim.dataArr[index].acce
+                self.vel += acce
+                #pos = (self.runner.x() + (self.vel))
+                self.runner.setX(self.sim.dataArr[index+1].pos)
             self.elapsedTime+= 1
          self.runner.setY((self.height()/2) - 100/2)
 

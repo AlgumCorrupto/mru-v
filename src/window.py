@@ -6,6 +6,7 @@ import PyQt6.QtWidgets as widgets
 from graph import g
 import sim
 from configDialog import ConfigDialog
+from nodeDialog import NodeDialog
 
 import numpy as np
 
@@ -101,10 +102,16 @@ class ApplicationWindow(QMainWindow):
 
         alterarBtn = QPushButton(self.ConfigWidget)
         alterarBtn.setText("Alterar Params")
-        self.configDialog = ConfigDialog(self) 
-        configLayout.addWidget(alterarBtn)
 
+        nodeBtn = QPushButton(self.ConfigWidget)
+        nodeBtn.setText("Adicionar Nó")
+
+        self.configDialog = ConfigDialog(self)
+        self.nodeDialog = NodeDialog(self, sim.obj)
+        configLayout.addWidget(alterarBtn)
+        configLayout.addWidget(nodeBtn)
         alterarBtn.clicked.connect(self.invokeCfgDialog)
+        nodeBtn.clicked.connect(self.invokeNodeDialog)
 
     #setup QGraphics
     def _setupQGraphics(self):
@@ -168,6 +175,9 @@ class ApplicationWindow(QMainWindow):
 
     def invokeCfgDialog(self):
         self.configDialog.show()
+    def invokeNodeDialog(self):
+        self.nodeDialog.show()
+
 
 
 qapp = QtWidgets.QApplication(sys.argv)

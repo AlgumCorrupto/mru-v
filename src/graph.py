@@ -127,7 +127,7 @@ class g():
         if(ymax == 0):
             ymod = 0.13
         elif(min(self.y)) < 0 and (max(self.y) > 0):
-            ymod = (ymax) + abs(min(self.y)) 
+            ymod = max(self.y) + abs(min(self.y)) 
         elif(abs(max(self.y)) == abs(min(self.y))):
             ymod = ymax
         else:

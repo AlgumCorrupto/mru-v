@@ -8,7 +8,7 @@ class Simulation():
 
     startVel = 0 
     currVel = 0
-    acce = 0 
+    acce = []
 
     startPos = 0 
     pos = 0
@@ -19,9 +19,14 @@ class Simulation():
     def __init__(self, vel, pos, acce, time0, timeF):
         self.startVel = vel
         self.startPos = pos
-        self.acce = acce
+        self.vel = vel
+        self.pos = pos
+        self.acce = []
+        self.acce = [acce]
         self.Time0 = time0
         self.TimeF = timeF
+        print("TimeF= {}".format(self.TimeF))
+        self.currTime = 0
         self.dataArr = []
         self.reset()
         self.run()
@@ -39,13 +44,13 @@ class Simulation():
     
     #run simulation
     def run(self):
-        #self.dataArr.append(data.Data(self.startPos, self.currTime + self.Time0, self.startVel, self.acce))
+        self.dataArr.append(data.Data(self.startPos, self.currTime + self.Time0, self.startVel, self.acce[0]))
         while self.currTime + self.Time0 < (self.TimeF):
             self.currTime+=1
-            vel = self.startVel + self.acce*self.currTime
-            pos = self.startPos + self.startVel * self.currTime + (self.acce*pow(self.currTime, 2)) * 0.5
+            self.vel = self.startVel + self.acce[0]*self.currTime
+            self.pos = self.startPos + self.startVel * self.currTime + (self.acce[0]*pow(self.currTime, 2)) * 0.5
             #Amém
-            self.dataArr.append(data.Data(pos, self.currTime + self.Time0, vel, self.acce))
+            self.dataArr.append(data.Data(self.pos, self.currTime + self.Time0, self.vel, self.acce[0]))
         print(self.dataArr[0].vel)
 
     #reset the simulation
@@ -54,6 +59,15 @@ class Simulation():
         self.pos = self.startPos
         self.currTime = 0
 
-
+    def addNode(self, deltaT, acce):
+        self.acce.append(acce)
+        print("TimeF= {}".format(self.TimeF))
+        print("deltaT= {}".format(deltaT))
+        while self.currTime < (deltaT + self.TimeF):
+            self.currTime+=1
+            self.vel += acce
+            self.pos += self.vel
+            self.dataArr.append(data.Data(self.pos, self.currTime, self.vel, acce))  
+        self.TimeF += deltaT
 
 obj = Simulation(0, 0, 1, 0, 50)

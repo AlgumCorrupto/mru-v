@@ -22,7 +22,7 @@ class ConfigDialog(widgets.QDialog):
         self.acceLabel  = widgets.QLabel()
         self.acceLabel.setText("Aceleração")
         self.acceIn     = widgets.QLineEdit()
-        self.acceIn.setText(obj.acce.__str__())
+        self.acceIn.setText(sum(obj.acce).__str__())
 
         self.time0Label = widgets.QLabel()
         self.time0Label.setText("Tempo Inicial")
@@ -101,6 +101,7 @@ class ConfigDialog(widgets.QDialog):
         self.parent.AGraph.setPlot(t, a)
         self.parent.VGraph.setPlot(t, v)
         self.parent.gScene.sim = obj
+        self.parent.nodeDialog.sim = obj
         self.parent.reset()
         self.parent.timer.start()
         self.close()
