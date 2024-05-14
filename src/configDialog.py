@@ -14,10 +14,25 @@ class ConfigDialog(widgets.QDialog):
         self.initForms()
 
     def initForms(self):
+
+        self.figWid = widgets.QWidget()
+        self.figLay = widgets.QHBoxLayout()
+
+        self.fig1 = widgets.QPushButton("Fig 1")
+        self.fig1.setCheckable(True)
+        self.fig2 = widgets.QPushButton("Fig 2")
+        self.fig1.setCheckable(True)
+    
+
         self.velLabel = widgets.QLabel()
         self.velLabel.setText("Velocidade")
         self.velIn    = widgets.QLineEdit()
         self.velIn.setText(obj.startVel.__str__())
+
+        self.figLabel = widgets.QLabel()
+        self.figLabel.setText("N da figura (começa do 0)")
+        self.figIn    = widgets.QLineEdit()
+        self.figIn.setText("0")
 
         self.acceLabel  = widgets.QLabel()
         self.acceLabel.setText("Aceleração")
@@ -42,6 +57,9 @@ class ConfigDialog(widgets.QDialog):
         self.submitBtn  = widgets.QPushButton()
         self.submitBtn.setText("Atualizar")
 
+        self.mainLayout.addWidget(self.figLabel)
+        self.mainLayout.addWidget(self.figIn)
+
         self.mainLayout.addWidget(self.velLabel)
         self.mainLayout.addWidget(self.velIn)
 
@@ -61,12 +79,22 @@ class ConfigDialog(widgets.QDialog):
 
         self.submitBtn.clicked.connect(self.updateStuff)
 
-        self.setFixedSize(165, 300)
+        self.setFixedSize(165, 350)
 
     def updateStuff(self):
         self.parent.timer.stop()
+        index = int(self.figIn.text())
+        if index > 1:
+            msg = widgets.QMessageBox()
+
+            msg.setWindowTitle("Erro ao processar formulário")
+            msg.setText("Figura não encontrada.")
+            msg.exec()
+            return
+                         
         if int(self.time0In.text()) > int(self.timeFIn.text()) or int(self.time0In.text()) < 0:
             msg = widgets.QMessageBox()
+
             msg.setWindowTitle("Erro ao processar formulário")
             msg.setText("Tempo final não pode ser menor que o tempo inicial.\nTempo não pode conter casas decimais.\nTempo não pode ser negativo.")
             msg.exec()
@@ -97,13 +125,12 @@ class ConfigDialog(widgets.QDialog):
             a.append(dat.acce)
             v.append(dat.vel)
         
-        self.parent.SGraph.setPlot(t, s)
-        self.parent.AGraph.setPlot(t, a)
-        self.parent.VGraph.setPlot(t, v)
-        self.parent.gScene.sim = obj
+        self.parent.SGraph.setPlot(t, s, index)
+        self.parent.AGraph.setPlot(t, a, index)
+        self.parent.VGraph.setPlot(t, v, index)
+        #self.parent.gScene.runners[int(self.figIn.text())].sim = obj
+        self.parent.gScene.createRunner(obj, index)
         self.parent.nodeDialog.sim = obj
         self.parent.reset()
         self.parent.timer.start()
         self.close()
-        
-    

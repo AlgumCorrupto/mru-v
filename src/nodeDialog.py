@@ -14,6 +14,11 @@ class NodeDialog(widgets.QDialog):
         self.initForms()
 
     def initForms(self):
+        self.figLabel  = widgets.QLabel()
+        self.figLabel.setText("Figura (começa do 0)")
+        self.figIn     = widgets.QLineEdit()
+        self.figIn.setText("0")
+
         self.acceLabel  = widgets.QLabel()
         self.acceLabel.setText("Aceleração")
         self.acceIn     = widgets.QLineEdit()
@@ -44,6 +49,14 @@ class NodeDialog(widgets.QDialog):
         self.parent.timer.stop()
         
         self.sim.addNode(int(self.timeFIn.text()), int(self.acceIn.text()))
+
+        if not self.parent.gScene.findRunner(int(self.figIn.text())):
+            msg = widgets.QMessageBox()
+            
+            msg.setWindowTitle("Erro ao processar formulário")
+            msg.setText("Figura não encontrada.")
+            msg.exec()
+            return
 
         t = []
         s = []

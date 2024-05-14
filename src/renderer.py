@@ -3,49 +3,45 @@ from PyQt6.QtWidgets import QGraphicsScene, QGraphicsRectItem, QGraphicsEllipseI
 from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QBrush, QColor, QFont
 from colorParser import clr
+from runner import Runner
 
 class scene(QGraphicsScene):
     def __init__(self, parent, view, sim):
         super().__init__(parent)
         self.elapsedTime = 0
         self.setSceneRect(0, 0, 400, 175)
-        self.sim = sim
         self.view = view
         self.view.setScene(self)
         self.text = self.addText("T={}, A={}, S={}, V={}".format(self.elapsedTime, 
-                                                                       self.sim.acce, 
-                                                                       self.sim.dataArr[0].pos,
-                                                                       self.sim.dataArr[0].vel))
+                                                                       0, 
+                                                                       0,
+                                                                       0))
         self.text.setFont(QFont("Cursiv"))
         self.text.setDefaultTextColor(clr.qtFg)
         self.text.setScale(5)
-        self.runner = QGraphicsEllipseItem(self.sim.startPos, 0, 100, 100)
-        brush = QBrush(clr.qtNormal[3])
-        self.runner.setBrush(brush)
-        self.vel = self.sim.startVel
-        self.addItem(self.runner)
+        self.runners = [Runner(self, clr.qtNormal[3], sim, 0), None]
+        self.addItem(self.runners[0])
         self.isRunning = False
 
     def run(self):
          self.text.setPos((self.view.width()/2) - ((self.text.boundingRect().width()*5)/2), ((self.height()/2)) - ((self.text.boundingRect().height()) * 5)/2)
-         index = int(self.elapsedTime - self.sim.Time0) if int(self.elapsedTime - self.sim.Time0) < self.sim.TimeF else self.sim.TimeF
-         if index < 0:
-             index = 0
          self.text.setPlainText("T={}, a={}, S={}, V={}".format(self.elapsedTime if self.elapsedTime > 0 else 0, 
-                                                                self.sim.dataArr[index].acce, 
-                                                                round(self.sim.dataArr[index].pos, 2),
-                                                                self.sim.dataArr[index].vel))
-                                                             
-         if self.isRunning and self.elapsedTime < self.sim.TimeF:
+                                                                self.runners[0].sim.dataArr[self.runners[0].index].acce, 
+                                                                round(self.runners[0].sim.dataArr[self.runners[0].index].pos, 2),
+                                                                self.runners[0].sim.dataArr[self.runners[0].index].vel))                  
+         if self.isRunning:
             print("renderer: {}".format(str(self.elapsedTime)))
-            if self.elapsedTime > self.sim.Time0:
-                acce = self.sim.dataArr[index].acce
-                self.vel += acce
-                #pos = (self.runner.x() + (self.vel))
-                self.runner.setX(self.sim.dataArr[index+1].pos)
+            for runner in self.runners:
+                if runner != None:
+                    runner.update(self.elapsedTime)
             self.elapsedTime+= 1
-         self.runner.setY((self.height()/2) - 100/2)
 
+         for runner in self.runners:
+             if runner != None:
+                 runner.setY((self.height()/2) - runner.scl/2)
+
+    def createRunner(self, sim, index):
+         self.runners[index] = Runner(self, clr.qtNormal[4], sim, 1)
 
     def pauseSim(self):
         self.isRunning = False
@@ -54,6 +50,12 @@ class scene(QGraphicsScene):
         self.isRunning = True if not self.isRunning else False
 
     def resetSim(self):
-        self.runner.setPos(self.sim.startPos, self.runner.y())
-        self.vel = self.sim.startVel
+        for runner in self.runners:
+            runner.reset()
         self.elapsedTime = 0
+
+    def findRunner(self, id):
+        for runner in self.runners:
+            if runner.id  == id:
+                return runner    
+        
